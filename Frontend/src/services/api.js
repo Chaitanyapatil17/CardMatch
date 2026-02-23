@@ -26,15 +26,19 @@ export const recommendCards = (userData) =>
 
 // Fetches the user's past recommendation scans
 export const getHistory = () => 
-  API.get("/recommend/history"); // Ensure this matches your backend route
+  API.get("/recommend/history"); 
 
 // ===============================
-// Card APIs
+// Card & Comparison APIs
 // ===============================
 
 // Fetches details for a single card by ID
 export const getCardDetails = (id) =>
   API.get(`/cards/${id}`);
+
+// NEW: Fetches multiple cards for the Comparison Table
+export const compareCards = (cardIds) =>
+  API.post("/cards/compare", { cardIds }); 
 
 // Fetches all available cards in the database
 export const getAllCards = () =>
