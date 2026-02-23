@@ -10,37 +10,38 @@ const historyRoutes = require("./routes/historyRoutes");
 const authRoutes = require("./routes/authRoutes");
 const favoriteRoutes = require("./routes/favoriteRoutes");
 
-
 dotenv.config();
 
 connectDB();
 
 const app = express();
 
-app.use(cors());
+// --- UPDATED CORS CONFIGURATION ---
+// This allows your Vercel frontend to talk to this Render backend
+app.use(cors({
+  origin: [
+    "http://localhost:5173", // For local development
+    "https://card-match-ppq9.vercel.app" // Your specific Vercel URL
+  ],
+  credentials: true
+}));
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// card routes
+// Routes
 app.use("/api/cards", cardRoutes);
-
-// recommendRoutes
 app.use("/api/recommend", recommendRoutes);
-
-// historyRoutes
 app.use("/api/history", historyRoutes);
-
-// authRoutes
-app.use("/api/auth", authRoutes);
-
-// favoriteRoutes
+app.use("/api/auth", authRoutes); // This handles your Login/Signup
 app.use("/api/favorites", favoriteRoutes);
 
-
-const PORT = process.env.PORT || 5000;
+// --- UPDATED PORT FOR PRODUCTION ---
+// Render automatically assigns a port; this ensures your app uses it
+const PORT = process.env.PORT || 10000; 
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
