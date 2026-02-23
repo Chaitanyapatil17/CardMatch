@@ -17,6 +17,18 @@ API.interceptors.request.use((req) => {
 });
 
 // ===============================
+// Authentication APIs (ADDED THIS)
+// ===============================
+
+// Sends email and password to backend to get a JWT token
+export const loginUser = (formData) => 
+  API.post("/auth/login", formData);
+
+// Sends user details to create a new account
+export const signupUser = (formData) => 
+  API.post("/auth/signup", formData);
+
+// ===============================
 // Recommendation & History APIs
 // ===============================
 
