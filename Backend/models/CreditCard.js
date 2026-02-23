@@ -44,8 +44,10 @@ const creditCardSchema = new mongoose.Schema({
 
   rewardType: {
     type: String,
-    enum: ["cashback", "travel", "rewards"],
-    default: "cashback"
+    required: true,
+    // UPDATE THIS ARRAY to include the new types
+    enum: ["rewards", "points", "cashback", "discounts", "membership rewards"], 
+    lowercase: true // Helps avoid "Points" vs "points" errors
   },
 
   benefits: [String],
