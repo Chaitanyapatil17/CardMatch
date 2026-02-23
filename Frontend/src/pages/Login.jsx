@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { loginUser } from "../services/authApi";
 import { useNavigate, Link } from "react-router-dom";
-import styled from "styled-components";
+import { motion } from "framer-motion";
+import { Mail, Lock, LogIn, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,6 +12,7 @@ export default function Login() {
     email: "",
     password: ""
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -20,148 +23,102 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const res = await loginUser(formData);
       localStorage.setItem("token", res.data.token);
-      navigate("/dashboard"); // redirect properly
+      navigate("/dashboard");
     } catch (error) {
       alert(error.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <StyledWrapper>
-      <div className="form-box">
-        <form className="form" onSubmit={handleLogin}>
-          <span className="title">Welcome Back</span>
-          <span className="subtitle">
-            Login to continue to CardMatch
-          </span>
+    <div className="flex items-center justify-center min-h-screen bg-white px-4">
+      {/* Background Decorative Blob */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-purple-100/40 rounded-full blur-[120px] -z-10" />
 
-          <div className="form-container">
-            <input
-              type="email"
-              name="email"
-              className="input"
-              placeholder="Email"
-              onChange={handleChange}
-              required
-            />
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md bg-white border border-purple-100 p-8 rounded-[2.5rem] shadow-2xl shadow-purple-500/5"
+      >
+        {/* Header */}
+        <div className="text-center mb-10">
+          <div className="w-16 h-16 bg-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-200">
+            <LogIn className="text-white" size={28} />
+          </div>
+          <h1 className="text-3xl font-bold text-slate-900">Welcome Back</h1>
+          <p className="text-slate-500 mt-2">Login to manage your CardMatch profile</p>
+        </div>
 
-            <input
-              type="password"
-              name="password"
-              className="input"
-              placeholder="Password"
-              onChange={handleChange}
-              required
-            />
+        {/* Form */}
+        <form onSubmit={handleLogin} className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-400 uppercase tracking-widest ml-1">
+              Email Address
+            </label>
+            <div className="relative group">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-500 transition-colors">
+                <Mail size={18} />
+              </div>
+              <input
+                type="email"
+                name="email"
+                placeholder="name@example.com"
+                className="w-full pl-12 pr-4 py-4 bg-slate-50 border-transparent border-2 rounded-2xl focus:bg-white focus:border-purple-200 focus:ring-0 transition-all outline-none text-slate-700 font-medium"
+                onChange={handleChange}
+                required
+              />
+            </div>
           </div>
 
-          <button type="submit">Login</button>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center px-1">
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                Password
+              </label>
+              <Link to="#" className="text-xs font-bold text-purple-600 hover:underline">
+                Forgot?
+              </Link>
+            </div>
+            <div className="relative group">
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-purple-500 transition-colors">
+                <Lock size={18} />
+              </div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                className="w-full pl-12 pr-4 py-4 bg-slate-50 border-transparent border-2 rounded-2xl focus:bg-white focus:border-purple-200 focus:ring-0 transition-all outline-none text-slate-700 font-medium"
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <Button 
+            type="submit" 
+            disabled={loading}
+            className="w-full h-14 rounded-2xl bg-slate-900 hover:bg-purple-600 text-white text-lg font-bold transition-all shadow-lg hover:shadow-purple-200 mt-4"
+          >
+            {loading ? "Signing in..." : "Login"}
+          </Button>
         </form>
 
-        <div className="form-section">
-          <p>
+        {/* Footer */}
+        <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+          <p className="text-slate-500">
             Don’t have an account?{" "}
-            <Link to="/signup">Sign up</Link>
+            <Link to="/signup" className="text-purple-600 font-bold hover:underline inline-flex items-center gap-1">
+              Sign up <ArrowRight size={14} />
+            </Link>
           </p>
         </div>
-      </div>
-    </StyledWrapper>
+      </motion.div>
+    </div>
   );
 }
-
-const StyledWrapper = styled.div`
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.1),
-    rgba(168, 85, 247, 0.1)
-  );
-
-  .form-box {
-    width: 350px;
-    background: #f1f7fe;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  .form {
-    display: flex;
-    flex-direction: column;
-    padding: 32px 24px 24px;
-    gap: 16px;
-    text-align: center;
-  }
-
-  .title {
-    font-weight: bold;
-    font-size: 1.6rem;
-  }
-
-  .subtitle {
-    font-size: 0.95rem;
-    color: #666;
-  }
-
-  .form-container {
-    overflow: hidden;
-    border-radius: 8px;
-    background-color: #fff;
-    margin: 1rem 0 0.5rem;
-  }
-
-  .input {
-    background: none;
-    border: 0;
-    outline: 0;
-    height: 45px;
-    width: 100%;
-    border-bottom: 1px solid #eee;
-    font-size: 0.9rem;
-    padding: 8px 15px;
-  }
-
-  .input:last-child {
-    border-bottom: none;
-  }
-
-  .form-section {
-    padding: 16px;
-    font-size: 0.85rem;
-    background-color: #e0ecfb;
-  }
-
-  .form-section a {
-    font-weight: bold;
-    color: #0066ff;
-    transition: 0.3s;
-  }
-
-  .form-section a:hover {
-    color: #005ce6;
-    text-decoration: underline;
-  }
-
-  .form button {
-    background-color: #0066ff;
-    color: #fff;
-    border: 0;
-    border-radius: 24px;
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .form button:hover {
-    background-color: #005ce6;
-  }
-`;
