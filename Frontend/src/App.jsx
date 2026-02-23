@@ -3,12 +3,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 
-import Home from "./pages/Home";
+import Landing from "./pages/Landing";
+import Dashboard from "./pages/Dashboard";
+import Recommend from "./pages/Recommend";   // ✅ ADD THIS
 import History from "./pages/History";
+import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import CardDetails from "./pages/CardDetails"; // ✅ ADD THIS
-import Favorites from "./pages/Favorites";
+import CardDetails from "./pages/CardDetails";
 
 function App() {
 
@@ -20,12 +22,26 @@ function App() {
 
       <Routes>
 
-        {/* Protected routes */}
+        {/* Public Routes */}
+        <Route path="/" element={<Landing />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Protected Routes */}
         <Route
-          path="/"
+          path="/dashboard"
           element={
             <ProtectedRoute>
-              <Home />
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/recommend"
+          element={
+            <ProtectedRoute>
+              <Recommend />
             </ProtectedRoute>
           }
         />
@@ -39,7 +55,15 @@ function App() {
           }
         />
 
-        {/* ✅ ADD THIS NEW ROUTE */}
+        <Route
+          path="/favorites"
+          element={
+            <ProtectedRoute>
+              <Favorites />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/cards/:id"
           element={
@@ -49,18 +73,8 @@ function App() {
           }
         />
 
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        <Route
-  path="/favorites"
-  element={
-    <ProtectedRoute>
-      <Favorites />
-    </ProtectedRoute>
-  }
-/>
+        {/* Fallback */}
+        <Route path="*" element={<Landing />} />
 
       </Routes>
 

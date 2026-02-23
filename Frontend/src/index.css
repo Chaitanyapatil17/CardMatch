@@ -118,3 +118,51 @@
     scroll-behavior: smooth;
   }
 }
+
+/* ---------------- SHINY BUTTON ANIMATION ---------------- */
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 120%;
+  }
+  100% {
+    left: 120%;
+  }
+}
+
+.shine-effect {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-20deg);
+  animation: shine 2.5s infinite;
+}
+
+/* ---------------- PULSATING BUTTON ---------------- */
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  70% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+.pulse-animation {
+  animation: pulse-ring var(--duration) infinite;
+  background: var(--pulse-color);
+  opacity: 0.4;
+}

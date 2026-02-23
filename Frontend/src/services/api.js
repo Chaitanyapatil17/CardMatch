@@ -4,7 +4,7 @@ const API = axios.create({
   baseURL: "http://localhost:5000/api",
 });
 
-// ✅ Add JWT token automatically
+// ✅ Automatically attach JWT token
 API.interceptors.request.use((req) => {
 
   const token = localStorage.getItem("token");
@@ -17,18 +17,24 @@ API.interceptors.request.use((req) => {
 
 });
 
-// Recommendation API
+// ===============================
+// Recommendation API (UPDATED)
+// ===============================
 export const recommendCards = (userData) =>
-  API.post("/recommend", userData);
+  API.post("/recommend/analyze", userData);
 
-// ✅ NEW: Get card details API
+// ===============================
+// Card APIs
+// ===============================
 export const getCardDetails = (id) =>
   API.get(`/cards/${id}`);
 
-// Get all cards
 export const getAllCards = () =>
   API.get("/cards");
 
+// ===============================
+// Favorites APIs
+// ===============================
 export const addFavorite = (cardId) =>
   API.post("/favorites", { cardId });
 

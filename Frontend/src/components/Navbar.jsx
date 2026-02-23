@@ -4,9 +4,18 @@ import { Button } from "@/components/ui/button";
 export default function Navbar() {
 
   const location = useLocation();
-
   const token = localStorage.getItem("token");
 
+  // Hide Navbar on Landing, Login, Signup
+  if (
+    location.pathname === "/" ||
+    location.pathname === "/login" ||
+    location.pathname === "/signup"
+  ) {
+    return null;
+  }
+
+  // Also hide if not logged in
   if (!token) return null;
 
   const handleLogout = () => {
@@ -15,20 +24,19 @@ export default function Navbar() {
   };
 
   return (
-
     <nav className="bg-white shadow-md border-b">
 
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-        <Link to="/" className="font-bold text-xl">
+        <Link to="/dashboard" className="font-bold text-xl">
           CardMatch
         </Link>
 
         <div className="flex gap-3">
 
-          <Link to="/">
+          <Link to="/dashboard">
             <Button variant="ghost">
-              Home
+              Dashboard
             </Button>
           </Link>
 
@@ -56,7 +64,5 @@ export default function Navbar() {
       </div>
 
     </nav>
-
   );
-
 }
