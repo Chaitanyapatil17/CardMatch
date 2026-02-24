@@ -21,14 +21,23 @@ const app = express();
 // This allows your Vercel frontend to talk to this Render backend
 const cors = require("cors");
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://card-match-frontend.vercel.app"
+];
+
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://card-match-frontend.vercel.app"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
+
+app.options("*", cors()); // Allow preflight
 
 app.use(express.json());
 
