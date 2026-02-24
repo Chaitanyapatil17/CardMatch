@@ -27,7 +27,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://card-match-black.vercel.app"
+    "https://card-match-frontend.vercel.app/login"
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
