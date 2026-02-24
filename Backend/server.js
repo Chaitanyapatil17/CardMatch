@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
+
 const connectDB = require("./config/db");
 
 const cardRoutes = require("./routes/cardRoutes");
@@ -18,11 +19,14 @@ const app = express();
 
 // --- UPDATED CORS CONFIGURATION ---
 // This allows your Vercel frontend to talk to this Render backend
+const cors = require("cors");
+
 app.use(cors({
   origin: [
-    "http://localhost:5173", // For local development
-    "https://card-match-ppq9.vercel.app" // Your specific Vercel URL
+    "http://localhost:5173",
+    "https://card-match-frontend.vercel.app"
   ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
