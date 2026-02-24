@@ -22,12 +22,16 @@ const app = express();
   - No app.options("*") (causes crash in Express 5)
 */
 
+
+
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://card-match-frontend.vercel.app"
+    "https://card-match-black.vercel.app"
   ],
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 app.use(express.json());
