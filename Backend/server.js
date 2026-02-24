@@ -22,25 +22,16 @@ const app = express();
   - No app.options("*") (causes crash in Express 5)
 */
 
-
-
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://card-match-frontend.vercel.app/login"
+    "https://cardmatch-by-chaitanya.netlify.app"
   ],
-  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  credentials: true
 }));
 
-app.use(express.json());
-
-// Health check
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
-
+app.options("*", cors());
 // Routes
 app.use("/api/cards", cardRoutes);
 app.use("/api/recommend", recommendRoutes);
